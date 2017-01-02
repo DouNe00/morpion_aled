@@ -1,9 +1,9 @@
 ##
 ## Makefile for  in /home/cabane_g/rendu/Piscine_C_J10/do-op
-## 
+##
 ## Made by cabanes gabriel
 ## Login   <cabane_g@epitech.net>
-## 
+##
 ## Started on  Mon Oct 12 09:17:53 2015 cabanes gabriel
 ## Last update Thu Dec 10 18:05:59 2015 cabanes gabriel
 ##
@@ -13,15 +13,11 @@ CC	= gcc -g
 RM	= rm -f
 
 CFLAGS	= -I./include/ -w -Wall -Wextra -pedantic -g
-LIB	= lib/libmy.a lib/myprintf.a -lncurses
+LIB	= -lncurses
 
-NAME	= my_select
+NAME	= morpion
 
-SRCS	= main.c \
-	  display_argv.c \
-	  create_list.c \
-	  manage_key.c \
-	  manage_bonus.c
+SRCS	= display_game.c \
 
 OBJS	= $(SRCS:.c=.o)
 
@@ -31,7 +27,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(CC) $(OBJS) -o $(NAME) $(LIB)
 
-clean: 
+clean:
 	$(RM) $(OBJS)
 
 fclean: clean
