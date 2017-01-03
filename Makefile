@@ -12,12 +12,12 @@ CC	= gcc -g
 
 RM	= rm -f
 
-CFLAGS	= -I./include/ -w -Wall -Wextra -pedantic -g
+CFLAGS	=  -w -Wall -Wextra -ansi
 LIB	= -lncurses
 
-NAME	= morpion
+NAME	= tictactoe
 
-SRCS	= display_game.c \
+SRCS	= displayFunctions.c gameFunctions.c stack.c main.c\
 
 OBJS	= $(SRCS:.c=.o)
 
