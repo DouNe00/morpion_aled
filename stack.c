@@ -12,7 +12,9 @@ void Stack_Init(Stack *S)
 int Stack_Top(Stack *S)
 {
     if (S->size == 0) {
+      /* can't be used with ncurses
         fprintf(stderr, "Error: stack empty\n");
+        */
         return -1;
     }
 
@@ -23,14 +25,19 @@ void Stack_Push(Stack *S, int c)
 {
     if (S->size < STACK_MAX)
         S->data[S->size++] = c;
+    /*
     else
+     can't be used with ncurses
         fprintf(stderr, "Error: stack full\n");
+    */
 }
 
 int Stack_Pop(Stack *S)
 {
     if (S->size == 0) {
+      /* can't be used with ncurses
       fprintf(stderr, "Error: stack empty\n");
+      */
       return -1;
     }
     else  {
