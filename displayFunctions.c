@@ -53,7 +53,7 @@ void displayGrid(WINDOW *field, int size) {
 }
 
 void updateCursor(WINDOW *field, Stack *board, int size, int ch, int *cursor_x, int *cursor_y) {
-	/* If not spacebar, they are moving */
+
 	int min_y = (LINES - (size - 1) * tile_height) / 2;
 	int min_x = (COLS - right_column_width - (size - 1) * tile_width) / 2;
 	int max_y = min_y + (size - 1) * tile_height;

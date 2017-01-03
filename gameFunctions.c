@@ -16,6 +16,40 @@ void gameSettings(char *argv[], int *size_board, int *game_mode, int *earthquake
   *earthquake = atoi(argv[3]);
 }
 
+int coordToTile(int size_board, int cursor_y, int cursor_x) {
+	int min_y = (LINES - (size_board - 1) * tile_height) / 2;
+	int min_x = (COLS - right_column_width - (size_board - 1) * tile_width) / 2;
+
+	int board_y = (cursor_y - min_y) / tile_width;
+	int board_x = (cursor_x - min_x) / tile_height;
+
+	return (board_y * size_board + board_x);
+}
+
+void moveAdd(int cursor_y, int cursor_x, int turn, Stack* board, int size_board, WINDOW *field) {
+	int position_tile = coordToTile(size_board, cursor_y, cursor_x);
+	int player = turn % 2 + 1;
+	if(player == 1) {
+		Stack_Push(&board[position_tile], PLAYER_1);
+	}
+	else {
+		Stack_Push(&board[position_tile], PLAYER_2);
+	}
+	mvwaddch(field, cursor_y, cursor_x, Stack_Top(&board[position_tile]));
+	wrefresh(field);
+}
+
+void moveRemove(int cursor_y, int cursor_x, int turn, Stack* board, int size_board, WINDOW *field) {
+	int position_tile = coordToTile(size_board, cursor_y, cursor_x);
+	Stack_Pop(&board[position_tile]);
+	mvwaddch(field, cursor_y, cursor_x, Stack_Top(&board[position_tile]));
+	wrefresh(field);
+}
+
+int checkWin(int size, int game_mode, Stack *board) {
+	return 0;
+}
+
 void playGame(int size_board, int num_elem, int game_mode, int earthquake) {
   initCurses();
   /* arbitrary marges */
@@ -34,14 +68,29 @@ void playGame(int size_board, int num_elem, int game_mode, int earthquake) {
   initWindowBorders(field, stack_content);
   initBoard(field, boardData, size_board, num_elem);
 
-  getch();
+	/* init cursor position to top left tile */
+	int ch, game_over = 0, turn = -1, cursor_x, cursor_y;
+	cursor_y = (LINES - (size_board - 1) * tile_height) / 2;
+	cursor_x = (COLS - right_column_width - (size_board - 1) * tile_width) / 2;
+
+  while( (ch=getch()) != 'q' && !game_over ) {
+		if (ch != 'p' && ch != 'r') {
+			updateCursor(field, boardData, size_board, ch, &cursor_x, &cursor_y);
+		}
+		else if(ch == 'p') {
+			moveAdd(cursor_y, cursor_x, ++turn, boardData, size_board, field);
+			game_over = checkWin(size_board, game_mode, boardData);
+		}
+		else {
+			moveRemove(cursor_y, cursor_x, ++turn,boardData, size_board, field);
+			game_over = checkWin(size_board, game_mode, boardData);
+		}
+	}
   endwin();
 }
 
 /*
-int ch, game_turn = 1, cursor_x, cursor_y;
-cursor_y = (LINES - (size_board - 1) * tile_height) / 2;
-cursor_x = (COLS - right_column_width - (size_board - 1) * tile_width) / 2;
+
 
 while( (ch = getch()) != 'q' || game_turn ) {
   updateCursor(field, boardData, size_board, ch, &cursor_x, &cursor_y);
