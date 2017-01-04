@@ -15,7 +15,7 @@ int Stack_Top(Stack *S)
       /* can't be used with ncurses
         fprintf(stderr, "Error: stack empty\n");
         */
-        return -1;
+        return EMPTY;
     }
 
     return S->data[S->size-1];

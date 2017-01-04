@@ -83,3 +83,36 @@ void updateCursor(WINDOW *field, Stack *board, int size, int ch, int *cursor_x, 
 		}
 	wrefresh(field);
 }
+
+void displayErrorEmpty(WINDOW *field) {
+	mvwprintw(field, 6, 2, "Vous ne pouvez pas retirer un element d'un pile vide, jouer de nouveau");
+	wrefresh(field);
+}
+
+void removeErrorEmpty(WINDOW *field) {
+	mvwprintw(field, 6, 2, "                                                                      ");
+	wrefresh(field);
+}
+
+void displayGameInfo(WINDOW *field, int size, int game_mode, int earthquake, int turn) {
+	if (game_mode == 1) {
+		mvwprintw(field, 2, 2, "Tictactoe. Mode Vue du dessus. Seisme : %d. Joueur %d.", earthquake, turn % 2 + 1);
+	}
+	else {
+		mvwprintw(field, 2, 2, "Tictactoe. Mode 3d. Seisme : %d. Joueur %d.", earthquake, turn % 2 + 1);
+	}
+	mvwprintw(field, 4, 2, "q pour quitter, p pour poser, r pour retirer, fleches pour deplacer le curseur");
+wrefresh(field);
+}
+
+/* TODO : seg fault and keep cursor at the top left of the window */
+void displayStackData(WINDOW *stack_window, int cursor_y, int cursor_x, Stack *board, int size) {
+	int position_tile = coordToTile(size, cursor_y, cursor_x);
+	int i;
+	wclear(stack_window);
+	box(stack_window, 0, 0);
+	for(i = board[position_tile].size - 1; i >= 0; i--) {
+		mvwprintw(stack_window, i, 2, "%c", board[position_tile].data[i]);
+	}
+	wrefresh(stack_window);
+}
